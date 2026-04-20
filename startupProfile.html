@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Startup Profile - StartIt</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@400;600;700;800&display=swap"
+        rel="stylesheet" />
+
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="./css/startupProfile.css" />
+
+    <style>
+        .toast-msg {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            font-family: var(--font-body);
+            font-size: 0.875rem;
+            font-weight: 500;
+            z-index: 9999;
+            display: none;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+        }
+        .toast-msg.success { background:#dcfce7; color:#166534; border:1px solid #bbf7d0; display:block; }
+        .toast-msg.error   { background:#fef2f2; color:#991b1b; border:1px solid #fecaca; display:block; }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="navbar__inner">
+            <div class="d-flex align-items-center gap-3">
+                <a href="./index.html" class="navbar__brand">StartIt</a>
+                <div class="navbar__search d-none d-md-flex">
+                    <span class="material-symbols-outlined">search</span>
+                    <input type="text" placeholder="Search companies, founders..." />
+                </div>
+            </div>
+
+            <ul class="navbar__links d-none d-md-flex">
+                <li><a href="./index.html">Home</a></li>
+                <li><a href="./startups.html" class="active">Explore</a></li>
+                <li><a href="#">Portfolio</a></li>
+                <li><a href="#">Insights</a></li>
+            </ul>
+
+            <div class="navbar__actions">
+                <div id="navAuth">
+                    <button class="btn-contact d-none d-md-block" onclick="window.location.href='./login.html'">Log in</button>
+                    <button class="btn-invest" onclick="window.location.href='./register.html'">Join Now</button>
+                </div>
+                <div id="navUser" style="display:none;" class="d-flex align-items-center gap-2">
+                    <span id="navUserName" style="font-size:0.875rem;font-weight:600;color:#002045;"></span>
+                    <img src="./assets/images/avatar.png" alt="Investor profile avatar" class="navbar__avatar" />
+                    <button class="btn-contact" onclick="logout()">Logout</button>
+                </div>
+            </div>
+
+        </div>
+    </nav>
+
+    <main class="main">
+        <div class="row g-5 align-items-center hero">
+
+            <div class="col-12 col-lg-8">
+                <span class="hero__eyebrow" id="heroEyebrow">Seed Round • Deep Tech</span>
+                <h1 class="hero__title" id="heroTitle">Aether Dynamics</h1>
+                <p class="hero__description" id="heroDesc">
+                    Pioneering next-generation solid-state atmospheric energy harvesting.
+                    We are converting ambient radio frequencies into usable, sustainable
+                    enterprise power grids.
+                </p>
+
+                <div class="tags">
+                    <span class="tag tag--green" id="tagRaising">
+                        <span class="material-symbols-outlined" style="font-size:1rem;">payments</span>
+                        Raising $4.5M Seed
+                    </span>
+                    <span class="tag tag--teal">
+                        <span class="material-symbols-outlined" style="font-size:1rem;">group_add</span>
+                        Hiring Lead Engineer
+                    </span>
+                    <span class="tag tag--surface">
+                        <span class="material-symbols-outlined" style="font-size:1rem;">location_on</span>
+                        Boston, MA
+                    </span>
+                </div>
+
+                <div class="hero__actions">
+                    <button class="btn-primary" onclick="handleSendOffer()">Send Offer</button>
+                    <button class="btn-ghost" onclick="handleShowInterest()">Show Interest</button>
+                    <button class="btn-ghost" onclick="handleOpenChat()" style="border:1px solid rgba(0,32,69,0.2);">
+                        <span class="material-symbols-outlined" style="font-size:1rem;vertical-align:middle;">chat</span>
+                        Message
+                    </button>
+                </div>
+            </div>
+
+            <div class="col-12 col-lg-4">
+                <div class="raise-card">
+                    <div class="raise-card__header">
+                        <div class="raise-card__icon">
+                            <span class="material-symbols-outlined" id="raiseIcon">bolt</span>
+                        </div>
+                        <span class="badge-fast">Fast Track</span>
+                    </div>
+                    <div>
+                        <div class="raise-card__amount" id="raiseAmount">$1.2M</div>
+                        <div class="raise-card__sub" id="raiseSub">Committed of $4.5M</div>
+                        <div class="progress">
+                            <div class="progress__bar" id="progressBar"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="grid">
+            <div class="card card--pitch">
+                <div class="pitch__header">
+                    <h2 class="card__title mb-0">Pitch Deck Preview</h2>
+                    <button class="pitch__link">
+                        Request Full Deck
+                        <span class="material-symbols-outlined" style="font-size:1rem;">arrow_forward</span>
+                    </button>
+                </div>
+                <div class="pitch__image-wrapper">
+                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuD1-I7efZCiJsC9y6IEEL60bBi0CvmBSS00EiPnn6z2w19IstwTk-ERpnVacAgBKtdJ92pHZorBWr16NYYC0aSAlSgCYgfXhOh_ZV8_ekrAzSZQSSctHBA6cy3zXux0jD348K1pxozLCCf4TnAJaJ2Tvbt3Rah44MDVBiJVOLPKi39tvXSdpKrrWNlAqp4vNYQ_ZLIwWpMU-06EqhaWoJRV5GnyYNZ5mjRNYSVtiN6436eIDi_93sCdfYc2RWsWTnm-2QPtlX-p"
+                        alt="Pitch deck slide showing market growth" />
+                    <div class="pitch__overlay">
+                        <div class="pitch__play">
+                            <span class="material-symbols-outlined fill">play_arrow</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2 class="card__title">Founding Team</h2>
+
+                <div class="team__list">
+
+                    <div class="team__member">
+                        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuB62JiyVQ6dPYqmOZJoFLHr6hvkUgjWP7_YRl3Bc2Zg-KyebT4zmje4iaQEw_j23L16FFCNixUK7ya9JC1DDx_C6LcnjYYhZwYHeesaCjKw0Bm22VKTqvr4vbb_zKlzaCDjv9Uhi4erwyjGCip_IPA0G7VroI3zM2Sjz9ncpc-iJXVuPWKLaMT2uwEClVxWQ7UkaBkouey2X1YXTOUSKFzZvNRh8-U8tMp1ha7nAg_44_P-1wAysmpChRuTg9I99Zvt3JNWsqVW"
+                            alt="Dr. Sarah Chen" class="team__avatar" />
+                        <div>
+                            <div class="team__name">Dr. Sarah Chen</div>
+                            <div class="team__role">CEO &amp; Co-Founder</div>
+                            <div class="team__prev">ex-MIT Lincoln Lab</div>
+                        </div>
+                    </div>
+
+                    <div class="team__member">
+                        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuB3xdNjVwLYbS2ByY8qxys18otaFMVnmsN_ENRMKn2OsjdaIGLjsnfBLMbUaf_uGQ7EG1yWuCQm9ceQiUO2U3Qrke07vzFaWHNn3_3hVpQ4iOqUNfzLLoKJu_4gWFbuAH8Di-VDMTnHtr3nCnRXjxMNv38fNKJYLl2XwxNlDo5jBpAunvNLnZls2YdK4-c7dZW-22W_QsyI6OozFJ6_ePoONu8dehtVMjBde0WZOiO-o9zanJn2TmWKSa0ABe6ks18liNe4IfE0"
+                            alt="Marcus Vance" class="team__avatar" />
+                        <div>
+                            <div class="team__name">Marcus Vance</div>
+                            <div class="team__role">CTO</div>
+                            <div class="team__prev">ex-Tesla Energy</div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <button class="team__cta">
+                    View Advisory Board
+                    <span class="material-symbols-outlined">arrow_right_alt</span>
+                </button>
+            </div>
+
+            <div class="traction card--traction">
+
+                <div class="traction__info">
+                    <h2 class="traction__title">Traction &amp; Milestones</h2>
+                    <p class="traction__subtitle">
+                        A timeline of validation from industry leaders and foundational
+                        technical achievements.
+                    </p>
+                </div>
+
+                <div class="traction__milestones">
+
+                    <div class="milestone">
+                        <div class="milestone__icon milestone__icon--green">
+                            <span class="material-symbols-outlined">emoji_events</span>
+                        </div>
+                        <div>
+                            <span class="milestone__date">Q3 2023</span>
+                            <div class="milestone__title">TechCrunch Disrupt Finalist</div>
+                            <div class="milestone__desc">Hardware &amp; Energy Category</div>
+                        </div>
+                    </div>
+
+                    <div class="milestone">
+                        <div class="milestone__icon milestone__icon--blue">
+                            <span class="material-symbols-outlined">verified</span>
+                        </div>
+                        <div>
+                            <span class="milestone__date">Q1 2024</span>
+                            <div class="milestone__title">DOE Stage 1 Grant Approved</div>
+                            <div class="milestone__desc">$2.5M Non-dilutive funding secured</div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <div class="toast-msg" id="toastMsg"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const API_BASE  = './api';
+        let currentSlug = '';
+
+        function logout() {
+            localStorage.removeItem('auth_token');
+            localStorage.removeItem('user_username');
+            localStorage.removeItem('user_fullname');
+            localStorage.removeItem('user_email');
+            localStorage.removeItem('user_role');
+            window.location.reload();
+        }
+
+        function showToast(msg, type = 'success') {
+            const t = document.getElementById('toastMsg');
+            t.textContent  = msg;
+            t.className    = 'toast-msg ' + type;
+            setTimeout(() => { t.className = 'toast-msg'; }, 4000);
+        }
+
+        async function handleShowInterest() {
+            const token = localStorage.getItem('auth_token');
+            if (!token) {
+                showToast('Please log in to show interest.', 'error');
+                setTimeout(() => window.location.href = './login.html', 1500);
+                return;
+            }
+            try {
+                const res  = await fetch(API_BASE + '/send_interest.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ token, startup_id: currentSlug || 'aether-dynamics', type: 'interest' })
+                });
+                const data = await res.json();
+                showToast(data.success ? 'Interest registered successfully!' : (data.message || 'Failed to register interest.'), data.success ? 'success' : 'error');
+            } catch(e) {
+                showToast('Connection error. Please try again.', 'error');
+            }
+        }
+
+        function handleSendOffer() {
+            const token = localStorage.getItem('auth_token');
+            if (!token) {
+                showToast('Please log in to send an offer.', 'error');
+                setTimeout(() => window.location.href = './login.html', 1500);
+                return;
+            }
+            const slug = currentSlug || 'aether-dynamics';
+            window.location.href = './offer_negotiation.html?slug=' + encodeURIComponent(slug);
+        }
+
+        function handleOpenChat() {
+            const token = localStorage.getItem('auth_token');
+            if (!token) {
+                showToast('Please log in to send messages.', 'error');
+                setTimeout(() => window.location.href = './login.html', 1500);
+                return;
+            }
+            const slug = currentSlug || 'aether-dynamics';
+            window.location.href = './chat.html?slug=' + encodeURIComponent(slug);
+        }
+
+        async function loadStartupData(slug) {
+            try {
+                const res  = await fetch('./data/startup.data.json');
+                const data = await res.json();
+                const startup = data.find(s => s.slug === slug || String(s.id) === String(slug));
+                if (startup) {
+                    document.title = startup.name + ' - StartIt';
+                    document.getElementById('heroTitle').textContent   = startup.name;
+                    document.getElementById('heroDesc').textContent    = startup.description;
+                    document.getElementById('heroEyebrow').textContent = startup.stage + ' Round • ' + startup.sector;
+                    document.getElementById('tagRaising').innerHTML    =
+                        '<span class="material-symbols-outlined" style="font-size:1rem;">payments</span> Raising ' + startup.target + ' ' + startup.stage;
+                    document.getElementById('raiseSub').textContent    = 'Target of ' + startup.target;
+                }
+            } catch(e) {
+                console.error('Could not load startup data', e);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const token    = localStorage.getItem('auth_token');
+            const fullname = localStorage.getItem('user_fullname');
+            const navAuth  = document.getElementById('navAuth');
+            const navUser  = document.getElementById('navUser');
+            const navName  = document.getElementById('navUserName');
+
+            if (token && fullname) {
+                navAuth.style.display = 'none';
+                navUser.style.display = 'flex';
+                navName.textContent   = fullname;
+            }
+
+            const params = new URLSearchParams(window.location.search);
+            const slug   = params.get('slug') || params.get('id') || 'aether-dynamics';
+            currentSlug  = slug;
+
+            if (slug !== 'aether-dynamics') {
+                loadStartupData(slug);
+            }
+        });
+    </script>
+</body>
+
+</html>
